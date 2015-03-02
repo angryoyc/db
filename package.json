@@ -1,0 +1,26 @@
+{
+  "name": "db",
+  "version": "0.0.1",
+  "description": "PostgreSQL DB-adapter (wrapper) module",
+  "main": "db.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://serg@settv.ru:1022/opt/git/db.git"
+  },
+  "keywords": [
+  ],
+  "dependencies": {
+    "rsvp": "^3.0.14"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.3.0-beta1"
+  },
+  "author": "Serg A. Osipov",
+  "license": "ISC"
+}
