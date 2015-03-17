@@ -8,7 +8,7 @@
 //var pg = require('pg').native;
 var pg = require('pg');
 var cf = require('cf');
-var RSVP = require('rsvp');
+//var RSVP = require('rsvp');
 var client;
 
 module.exports = {
@@ -37,8 +37,8 @@ module.exports = {
  * @return {object}		Клиент
  */
 	connect: function(){
-		return cf.asy(arguments, function(connectionstring){
-			var dbclient=module.exports.getClient(connectionstring, resolve, reject);
+		return cf.asy(arguments, function(connectionstring, resolve, reject){
+			var dbclient=module.exports.getClient(connectionstring);
 			dbclient.connect(function(err){
 				if(err){
 					dbclient.end();
