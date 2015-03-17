@@ -17,8 +17,7 @@
   ],
   "dependencies": {
     "pg": "*",
-    "cf":"git+ssh://serg@settv.ru:1022/opt/git/cf.git",
-    "rsvp": "^3.0.14"
+    "cf":"git+ssh://serg@settv.ru:1022/opt/git/cf.git"
   },
   "devDependencies": {
     "jsdoc": "^3.3.0-beta1",
