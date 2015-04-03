@@ -16,11 +16,13 @@
   "keywords": [
   ],
   "dependencies": {
-    "rsvp": "^3.0.14"
+    "pg": "*",
+    "cf":"git+ssh://serg@settv.ru:1022/opt/git/cf.git"
   },
   "devDependencies": {
-    "mocha": "1.7.0",
-    "jsdoc": "^3.3.0-beta1"
+    "jsdoc": "^3.3.0-beta1",
+    "mocha": "^2.2.1",
+    "should": "^5.1.0"
   },
   "author": "Serg A. Osipov",
   "license": "ISC"
