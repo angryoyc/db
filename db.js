@@ -27,8 +27,9 @@ module.exports = {
  * @return {undefined} 
  */
 	clearClient: function(){
-		client=client || new pg.Client(conString);
+		client = client || new pg.Client(conString);
 		client.end();
+		client = null;
 	},
 
 /**
@@ -41,7 +42,7 @@ module.exports = {
 			var dbclient=module.exports.getClient(connectionstring);
 			dbclient.connect(function(err){
 				if(err){
-					dbclient.end();
+					//- dbclient.end();
 					module.exports.clearClient();
 					reject(err);
 				}else{
