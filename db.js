@@ -4,6 +4,7 @@
  * @email serg.osipov@gmail.com
  * @overview Module for make DB-connection and use it
  */
+'use strict';
 
 //var pg = require('pg').native;
 var pg = require('pg');
