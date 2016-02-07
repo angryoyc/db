@@ -1,4 +1,12 @@
 module.exports = new db();
+/** @module media
+ * @name db
+ * @author Serg A. Osipov
+ * @email serg.osipov@gmail.com
+ * @overview Module for make DB-connection and use it
+ */
+'use strict';
+
 var pg = require('pg');
 var cf = require('cf');
 var pool={};
