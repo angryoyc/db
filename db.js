@@ -1,103 +1,89 @@
-/** @module media
- * @name db
- * @author Serg A. Osipov
- * @email serg.osipov@gmail.com
- * @overview Module for make DB-connection and use it
- */
-
-//var pg = require('pg').native;
+module.exports = new db();
 var pg = require('pg');
 var cf = require('cf');
-//var RSVP = require('rsvp');
-var client;
+var pool={};
 
-module.exports = {
-/**
- * Вернуть объект "клиент" 
- * @param  {string} conString Строка подключения
- * @return {object}           Клиент
- */
-	getClient: function(conString){
-		client=client || new pg.Client(conString);
+
+function db(){
+
+	var self = this;
+	var conString;
+	var client;
+
+	this.readyForQuery=false;
+
+	var getClient = function(cs){
+		client=client || new pg.Client(cs);
 		return (client);
-	},
+	};
 
-/**
- * Сбросить клиента
- * @return {undefined} 
- */
-	clearClient: function(){
+	var clearClient = function(){
+		if(self.readyForQuery){
+			var hash = cf.md5(cs);
+			if(hash in pool) delete pool[hash];
+		}
 		client = client || new pg.Client(conString);
 		client.end();
 		client = null;
-	},
+	};
 
-/**
- * Установить соединение с базой, используя строку подключения connectionstring 
- * @param  {object}		connectionstring Объект, описывающий параметры подклчюения (свойство connectionstring)
- * @return {object}		Клиент
- */
-	connect: function(){
-		return cf.asy(arguments, function(connectionstring, resolve, reject){
-			var dbclient=module.exports.getClient(connectionstring);
-			dbclient.connect(function(err){
+	var sql = function (){
+		return cf.asy(arguments, function(sql, values, resolve, reject){
+			client.query(sql, values, function(err, result){
 				if(err){
-					//- dbclient.end();
-					module.exports.clearClient();
+					err.sql=sql;
+					err.values=values;
 					reject(err);
 				}else{
-					resolve(dbclient);
+					resolve(result);
 				};
 			});
-		})
-	},
+		});
+	};
 
-/**
- * Выполнение SQL-запроса с возвратом результатов через callback
- * @param  {str} 			SQL-запрос
- * @param  {Array} 			values	Список параметров
- * @param  {function}		onok 	Callback вызываемый при успешном выполнении запроса. Параметр - результат выполнения.
- * @param  {function}		onerr 	Callback вызываемый при возникновении ошибки. Параметр - ошибка.
- * @return {undefined}        
- */
-	sql: sql,
+	this.new = function(cs){
+		var d = new db();
+		if(cs){
+			return d.connect(cs);
+		}else{
+			return d;
+		};
+	};
+	
+	
 
-/**
- * Выполнение SQL-запроса с возвратом результатов через promise
- * @param 	{String}		sql		SQL-запрос
- * @param 	{Array} 		values	Список параметров
- * @return 	{Promise}		Промайс-объект, resolve-метод, который получит на вход результат выполнения запроса.
- */
-	SQL: sql
-};
+	this.connect = function(){
+		return cf.asy(arguments, function(connectionstring, resolve, reject){
+			var hash = cf.md5(connectionstring);
 
-function sql(){
-	return cf.asy(arguments, function(sql, values, resolve, reject){
-		client.query(sql, values, function(err, result){
-			if(err){
-				err.sql=sql;
-				err.values=values;
-				reject(err);
+//			console.log('connect method: current CS: ', conString);
+
+			if(self.readyForQuery) clearClient();
+			if(hash in pool){
+				resolve(pool[hash]);
 			}else{
-				resolve(result);
+				var dbclient=getClient(connectionstring);
+				dbclient.connect(function(err){
+					if(err){
+						self.readyForQuery = false;
+						clearClient();
+						reject(err);
+					}else{
+						pool[hash] = self;
+						conString = connectionstring;
+//						console.log('Connected to ', connectionstring);
+						self.readyForQuery = true;
+						resolve(self);
+					};
+				});
 			};
 		});
-	});
-};
+	};
 
-/*
-function(sql, values, onok, onerr){
-		client.query(sql, values, function(err, result){
-			if(err){
-				err.number=103;
-				err.sql=sql;
-				err.values=values;
-				if(typeof(onerr)=='function'){
-					onerr(err);
-				};
-			}else{
-				onok(result);
-			};
-		});
-	}
-*/
+	this.sql = sql;
+	this.SQL = sql;
+
+	this.print=function(){
+		console.log(conString);
+	};
+};
