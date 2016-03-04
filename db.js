@@ -27,7 +27,7 @@ function db(){
 
 	var clearClient = function(){
 		if(self.readyForQuery){
-			var hash = cf.md5(cs);
+			var hash = cf.md5(conString);
 			if(hash in pool) delete pool[hash];
 		}
 		client = client || new pg.Client(conString);
