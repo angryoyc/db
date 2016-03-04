@@ -90,6 +90,7 @@ function db(){
 
 	this.sql = sql;
 	this.SQL = sql;
+	this.close = clearClient;
 
 	this.print=function(){
 		console.log(conString);

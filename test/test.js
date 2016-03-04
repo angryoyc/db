@@ -49,7 +49,7 @@ describe('DB', function(){
 
 
 	describe('new method', function(){
-		it('should return db object wich ready for query', function(done){
+		it('should return db object which ready for query', function(done){
 			db.new('postgres://postgres:jlyfrj@127.0.0.1/settv_rest')
 			.then(
 				function(result){
