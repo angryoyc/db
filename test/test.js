@@ -4,8 +4,6 @@ var should = require('should');
 var conf = require('./config.json');
 var conn_string = conf.db.connectionstring;
 
-//postgres://common_utf:rjgthybr@127.0.0.1:6432/settv;
-
 describe('DB', function(){
 
 	describe('connect method', function(){

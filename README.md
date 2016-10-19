@@ -10,6 +10,8 @@ Install
 npm install git+ssh://serg@settv.ru:1022/opt/git/db.git
 
 
+
+
 Example
 --------
 ```
@@ -22,4 +24,12 @@ db.connect(conn_string)
 	console.log('The total number of users: ', result.rows[0].c);
 });
 
+```
+
+Tests
+------
+Edit ./test/config.json end set the correct connection string and then
+
+```
+make test
 ```
