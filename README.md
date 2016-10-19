@@ -28,7 +28,8 @@ db.connect(conn_string)
 
 Tests
 ------
-Edit ./test/config.json end set the correct connection string and then
+1. Copy ./test/config.json.example to ./test/config
+2. Edit ./test/config.json end set the correct connection string and then
 
 ```
 make test
