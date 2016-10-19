@@ -1,11 +1,16 @@
 #!/usr/local/bin/node
 var db=require('../db');
 var should = require('should');
+var conf = require('./config.json');
+var conn_string = conf.db.connectionstring;
+
+//postgres://common_utf:rjgthybr@127.0.0.1:6432/settv;
+
 describe('DB', function(){
 
 	describe('connect method', function(){
-		it('should return db object wich ready for query', function(done){
-			db.connect('postgres://common_utf:rjgthybr@127.0.0.1/settv')
+		it('should return db object which ready for query', function(done){
+			db.connect(conn_string)
 			.then(
 				function(result){
 					should(result.readyForQuery).eql(true);
@@ -50,7 +55,7 @@ describe('DB', function(){
 
 	describe('new method', function(){
 		it('should return db object which ready for query', function(done){
-			db.new('postgres://postgres:jlyfrj@127.0.0.1/settv_rest')
+			db.new('postgres://postgres:jlyfrj@127.0.0.1:6432/settv')
 			.then(
 				function(result){
 					should(result.readyForQuery).eql(true);
@@ -63,11 +68,11 @@ describe('DB', function(){
 			).catch(done);
 		})
 		it('test should return records number', function(done){
-			db.new('postgres://postgres:jlyfrj@127.0.0.1/settv')
+			db.new('postgres://postgres:jlyfrj@127.0.0.1:6432/settv')
 			.then(
 				function(db1){
 					should(db1.readyForQuery).eql(true);
-					db1.new('postgres://postgres:jlyfrj@127.0.0.1/settv_rest')
+					db1.new('postgres://postgres:jlyfrj@127.0.0.1:6432/settv')
 					.then(
 						function(db2){
 							db1.sql("select count(*) as c from cmmnt;", [], 
