@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "pg": "*",
-    "cf":"git+ssh://serg@settv.ru:1022/opt/git/cf.git"
+    "cf": "git+https://github.com/angryoyc/cf.git"
   },
   "devDependencies": {
     "jsdoc": "^3.3.0-beta1",
